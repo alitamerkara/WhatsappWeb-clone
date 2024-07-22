@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IoSearchSharp } from "react-icons/io5";
 import { GoPaperclip } from "react-icons/go";
 import { IoMdMore } from "react-icons/io";
 import { FaSearch } from "react-icons/fa";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
 import { FaMicrophone } from "react-icons/fa";
+import { useParams } from "react-router-dom";
+import db from "../firebase";
 
 const ChatScreen = () => {
+  const { roomId } = useParams();
+  const [roomName, setRoomName] = useState("");
+  useEffect(() => {
+    db.collection("rooms")
+      .doc(roomId)
+      .onSnapshot((snapshot) => setRoomName(snapshot.data().name));
+  }, [roomId]);
   return (
     <div className="w-2/3 bg-gradient-to-r from-blue-100 to-blue-300 flex flex-col justify-between h-full">
       <div>
@@ -17,7 +26,7 @@ const ChatScreen = () => {
               className="w-16 h-16 rounded-full object-cover"
             />
             <div className="mt-2">
-              <h2 className="font-bold">Leo Messi</h2>
+              <h2 className="font-bold">{roomName}</h2>
               <p className="text-neutral-500">Last seen at ...</p>
             </div>
           </div>
