@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { CgProfile } from "react-icons/cg";
 import { MdDonutLarge } from "react-icons/md";
 import { MdMessage } from "react-icons/md";
 import { IoMdMore } from "react-icons/io";
 import ChatPeople from "./ChatPeople";
 import { FaSearch } from "react-icons/fa";
 import db from "../firebase";
+import { CgProfile } from "react-icons/cg";
 
-const Sidebar = () => {
+const Sidebar = ({ user }) => {
   const [rooms, setRooms] = useState([]);
-  const [newChat, setNewChat] = useState(false);
+  const [photo, setPhoto] = useState(null);
+  const photoURL =
+    "https://lh3.googleusercontent.com/a/ACg8ocI5kO1H4WOLPu7XFVZ9kh9Ig0KAlhy1bpB6F7wRmzddQ0iuVgF9=s96-c";
   const startChat = (e) => {
     e.preventDefault();
     const roomName = prompt("pls enter a name");
@@ -38,12 +40,20 @@ const Sidebar = () => {
     <div className="w-1/3  h-full border-r">
       <div className="flex p-3 justify-between">
         <div>
-          <CgProfile className=" text-5xl" />
+          {photoURL ? (
+            <img
+              src={photoURL}
+              className="w-12 h-12 rounded-full object-cover mt-1"
+              alt="profile-picture"
+            />
+          ) : (
+            <CgProfile className="text-4xl mt-2" />
+          )}
         </div>
-        <div className="flex gap-3 mt-2">
-          <MdDonutLarge className=" text-3xl" />
-          <MdMessage className=" text-3xl" />
-          <IoMdMore className=" text-3xl" />
+        <div className="flex gap-4 mt-2">
+          <MdDonutLarge className=" text-4xl" />
+          <MdMessage className=" text-4xl" />
+          <IoMdMore className=" text-4xl" />
         </div>
       </div>
       <div className="mt-4">
@@ -63,7 +73,12 @@ const Sidebar = () => {
         </div>
       </div>
       {rooms.map((room) => (
-        <ChatPeople key={room.id} id={room.id} name={room.data.name} />
+        <ChatPeople
+          key={room.id}
+          id={room.id}
+          name={room.data.name}
+          category={room.category}
+        />
       ))}
     </div>
   );

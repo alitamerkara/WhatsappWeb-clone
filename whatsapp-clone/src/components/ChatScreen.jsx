@@ -8,7 +8,7 @@ import { FaMicrophone } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import db from "../firebase";
 
-const ChatScreen = () => {
+const ChatScreen = ({ randomPhoto }) => {
   const { roomId } = useParams();
   const [roomName, setRoomName] = useState("");
   useEffect(() => {
@@ -22,7 +22,7 @@ const ChatScreen = () => {
         <div className="bg-gray-100 flex p-3 justify-between">
           <div className="flex gap-4">
             <img
-              src="https://i.pinimg.com/474x/70/01/0d/70010df057bb304649da087fa4966bf0.jpg"
+              src={`https://picsum.photos/seed/${randomPhoto}/200/300`}
               className="w-16 h-16 rounded-full object-cover"
             />
             <div className="mt-2">
