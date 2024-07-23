@@ -1,10 +1,20 @@
-import React, { useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import db from "../firebase";
 
 const ChatPeople = ({ id, name, randomPhoto }) => {
-  // const category = ["nature", "car", "flower", "people", "baby"];
-  // const randomCategory = () => Math.floor(Math.random() * 5);
+  const [messages, setMessages] = useState("");
+  useEffect(() => {
+    if (id) {
+      db.collection("rooms")
+        .doc(id)
+        .collection("messages")
+        .orderBy("timestamp", "desc")
+        .onSnapshot((snaphot) =>
+          setMessages(snaphot.docs.map((doc) => doc.data()))
+        );
+    }
+  }, []);
 
   return (
     <div>
@@ -18,7 +28,7 @@ const ChatPeople = ({ id, name, randomPhoto }) => {
             />
             <div className="mt-2">
               <h2 className="font-bold">{name}</h2>
-              <p>Hello World!</p>
+              <p>{messages[0]?.message}</p>
             </div>
           </div>
         </div>

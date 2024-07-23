@@ -57,19 +57,21 @@ const Sidebar = ({ user }) => {
         </div>
       </div>
       <div className="mt-4">
-        <div
-          className="font-bold text-center cursor-pointer"
-          onClick={startChat}
-        >
-          <h1>ADD NEW CHAT</h1>
-        </div>
-        <div className="w-full flex border w-1/3 justify-between align-center px-2 py-2 mb-3 text-m rounded-3xl gap-3">
+        <div className="w-full flex border w-1/3 justify-between align-center px-2 py-2 text-m rounded-3xl gap-3">
           <FaSearch className="mt-1 ml-1 cursor-pointer" />
           <input
             type="text"
             className="border-none focus:outline-0 w-11/12 mx-2"
             placeholder="Search a chat or start the new one..."
           />
+        </div>
+        <div
+          className="font-bold text-center cursor-pointer"
+          onClick={startChat}
+        >
+          <h1 className="font-bold text-xl py-3 hover:bg-gray-100">
+            ADD NEW CHAT
+          </h1>
         </div>
       </div>
       {rooms.map((room) => (

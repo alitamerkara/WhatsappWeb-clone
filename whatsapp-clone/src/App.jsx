@@ -9,7 +9,6 @@ function App() {
   const category = ["nature", "car", "flower", "people", "baby"];
   const randomCategory = () => Math.floor(Math.random() * 5);
   const randomPhoto = category[randomCategory()];
-  console.log(user?.multiFactor.user.photoURL);
   return (
     <>
       <div className="bg-neutral-200 w-screen h-screen flex items-center justify-center">
