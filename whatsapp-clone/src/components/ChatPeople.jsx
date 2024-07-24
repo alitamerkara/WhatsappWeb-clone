@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import db from "../firebase";
 
-const ChatPeople = ({ id, name, randomPhoto }) => {
+const ChatPeople = ({ id, name, photo, setScreen }) => {
   const [messages, setMessages] = useState("");
   useEffect(() => {
     if (id) {
@@ -15,17 +15,18 @@ const ChatPeople = ({ id, name, randomPhoto }) => {
         );
     }
   }, []);
-
   return (
     <div>
-      <Link to={`/rooms/${id}`}>
+      <Link
+        to={`/rooms/${id}`}
+        onClick={() => {
+          setScreen(true);
+        }}
+      >
         <div className="border p-2 w-full">
           {/* PEOPLE */}
           <div className="flex gap-3 cursor-pointer">
-            <img
-              src={`https://picsum.photos/seed/${randomPhoto}/200/300`}
-              class="w-16 h-16 rounded-full object-cover"
-            />
+            <img src={photo} class="w-16 h-16 rounded-full object-cover" />
             <div className="mt-2">
               <h2 className="font-bold">{name}</h2>
               <p>{messages[0]?.message}</p>

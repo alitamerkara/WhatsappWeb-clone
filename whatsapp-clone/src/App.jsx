@@ -6,6 +6,7 @@ import LoginScreen from "./components/LoginScreen";
 
 function App() {
   const [user, setUser] = useState(null);
+  const [screen, setScreen] = useState(false);
   const category = ["nature", "car", "flower", "people", "baby"];
   const randomCategory = () => Math.floor(Math.random() * 5);
   const randomPhoto = category[randomCategory()];
@@ -21,13 +22,23 @@ function App() {
               />
             ) : (
               <>
-                <Route path="/" element={<Sidebar />} />
+                <Route
+                  path="/"
+                  element={
+                    <>
+                      <Sidebar /> <ChatScreen />
+                    </>
+                  }
+                />
                 <Route
                   path="/rooms/:roomId"
                   element={
                     <>
-                      <Sidebar randomPhoto={randomPhoto} />{" "}
-                      <ChatScreen randomPhoto={randomPhoto} />
+                      <Sidebar
+                        randomPhoto={randomPhoto}
+                        setScreen={setScreen}
+                      />{" "}
+                      <ChatScreen screen={screen} />
                     </>
                   }
                 />

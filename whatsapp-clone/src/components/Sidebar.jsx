@@ -7,10 +7,11 @@ import { FaSearch } from "react-icons/fa";
 import db from "../firebase";
 import { CgProfile } from "react-icons/cg";
 
-const Sidebar = ({ user }) => {
+const Sidebar = ({ randomPhoto, setScreen }) => {
   const [rooms, setRooms] = useState([]);
-  const [photo, setPhoto] = useState(null);
-  const photoURL =
+  const [newRoom, setNewRoom] = useState([]);
+  const currentRooms = newRoom.length > 0 ? newRoom : rooms;
+  const photo =
     "https://lh3.googleusercontent.com/a/ACg8ocI5kO1H4WOLPu7XFVZ9kh9Ig0KAlhy1bpB6F7wRmzddQ0iuVgF9=s96-c";
   const startChat = (e) => {
     e.preventDefault();
@@ -18,6 +19,7 @@ const Sidebar = ({ user }) => {
     if (roomName) {
       db.collection("rooms").add({
         name: roomName,
+        photoUrl: `https://picsum.photos/seed/${randomPhoto}/200/300`,
       });
     }
   };
@@ -36,19 +38,30 @@ const Sidebar = ({ user }) => {
 
     return () => unsubscribe();
   }, []);
+  const handleChange = (e) => {
+    console.log(e.target.value);
+    const filteredRooms = rooms?.filter((room) =>
+      room.data.name
+        .toLowerCase()
+        .trim()
+        .includes(e.target.value.toLowerCase().trim())
+    );
+    if (filteredRooms.length == 0) {
+      alert("sohbet bulunamadı");
+    }
+    setNewRoom(filteredRooms);
+    console.log(filteredRooms);
+  };
+
   return (
-    <div className="w-1/3  h-full border-r">
-      <div className="flex p-3 justify-between">
+    <div className="w-1/3  h-full border-r overflow-auto">
+      <div className="flex p-3 justify-between bg-gray-100">
         <div>
-          {photoURL ? (
-            <img
-              src={photoURL}
-              className="w-12 h-12 rounded-full object-cover mt-1"
-              alt="profile-picture"
-            />
-          ) : (
-            <CgProfile className="text-4xl mt-2" />
-          )}
+          <img
+            src={photo}
+            className="w-12 h-12 rounded-full object-cover mt-1"
+            alt="profile-picture"
+          />
         </div>
         <div className="flex gap-4 mt-2">
           <MdDonutLarge className=" text-4xl" />
@@ -56,12 +69,15 @@ const Sidebar = ({ user }) => {
           <IoMdMore className=" text-4xl" />
         </div>
       </div>
-      <div className="mt-4">
-        <div className="w-full flex border w-1/3 justify-between align-center px-2 py-2 text-m rounded-3xl gap-3">
+      <div className=" bg-gray-100">
+        <div className=" bg-white w-auto flex border w-1/3 justify-between align-center px-5 py-2 text-m rounded-3xl gap-3">
           <FaSearch className="mt-1 ml-1 cursor-pointer" />
           <input
+            // value={searchChat}
+            // onChange={(e) => setSearchChat(e.target.value)}
+            onKeyUp={handleChange}
             type="text"
-            className="border-none focus:outline-0 w-11/12 mx-2"
+            className="border-none focus:outline-0 w-11/12 mx-2 "
             placeholder="Search a chat or start the new one..."
           />
         </div>
@@ -74,12 +90,13 @@ const Sidebar = ({ user }) => {
           </h1>
         </div>
       </div>
-      {rooms.map((room) => (
+      {currentRooms.map((room) => (
         <ChatPeople
           key={room.id}
           id={room.id}
           name={room.data.name}
-          category={room.category}
+          photo={room.data.photoUrl}
+          setScreen={setScreen}
         />
       ))}
     </div>
